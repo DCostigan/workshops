@@ -1,6 +1,7 @@
 var url = require('url');
 var http = require('http');
 
+//make sure the client takes the appropriate number of arguments
 if (process.argv.length < 3) {
   console.log('usage: node http-client.js [h|rh|json|csv] [url]');
   process.exit(1);
@@ -12,6 +13,7 @@ var handlerType = process.argv[2];
 // The url to connect to:
 var urlStr = process.argv[3] || 'http://www-edlab.cs.umass.edu/cs326/schedule/';
 
+//Added the csv handlerType to the valid handlerType check
 if (!(handlerType === 'h' || handlerType === 'rh' || handlerType === 'json' || handlerType ==='csv')) {
   console.log('usage: node http-client.js [h|rh|json|csv] [url]');
   process.exit(1);  
@@ -78,6 +80,7 @@ var json_handler = createResponseHandler(function (data) {
   console.log(obj);
 });
 
+//New hanlder to parse the json array object back into csv and print it
 var csv_handler = createResponseHandler(function (data) {
   var arrayObj = JSON.parse(data);
   var str = '';
@@ -98,6 +101,7 @@ var csv_handler = createResponseHandler(function (data) {
 console.log(' --> connecting to ' + options.host + ' on port ' + options.port);
 console.log(' --> resource ' + options.path);
 
+//Added csv switch to request the data from the server
 switch (handlerType) {
   case 'h':
     var req = http.request(options, handler);
