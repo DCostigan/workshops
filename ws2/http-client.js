@@ -79,7 +79,20 @@ var json_handler = createResponseHandler(function (data) {
 });
 
 var csv_handler = createResponseHandler(function (data) {
-  console.log(data);
+  var arrayObj = JSON.parse(data);
+  var str = '';
+  for (var i = 0; i < arrayObj.length; i++) {
+    var line = '';
+    for (var index in arrayObj[i]) {
+      if (line != ''){ 
+        line += ',';
+      }
+      line += arrayObj[i][index];
+    }
+
+    str += line + '\r\n';
+  }
+  console.log(str);
 });
 
 console.log(' --> connecting to ' + options.host + ' on port ' + options.port);
