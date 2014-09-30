@@ -82,20 +82,25 @@ var json_handler = createResponseHandler(function (data) {
 
 //New hanlder to parse the json array object back into csv and print it
 var csv_handler = createResponseHandler(function (data) {
+  //Parse stringified json to a sort of array of objects
   var arrayObj = JSON.parse(data);
-  var str = '';
-  for (var i = 0; i < arrayObj.length; i++) {
+  //initilize print string
+  var csvString = '';
+  //loop while the array of objects has elements
+  for (var counter = 0; counter < arrayObj.length; counter++) {
+    //initilize a new variable to construct a line of csv text
     var line = '';
-    for (var index in arrayObj[i]) {
+    //while an object has more properties- add each property and comma to the line
+    for (var index in arrayObj[counter]) {
       if (line != ''){ 
         line += ',';
       }
-      line += arrayObj[i][index];
+      line += arrayObj[counter][index];
     }
-
-    str += line + '\r\n';
+    //add each of the lines to the return string with a newline between each line
+    csvString += line + '\r\n';
   }
-  console.log(str);
+  console.log(csvString);
 });
 
 console.log(' --> connecting to ' + options.host + ' on port ' + options.port);
