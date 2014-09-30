@@ -5,7 +5,7 @@ if (process.argv.length < 3) {
   console.log('usage: node http-client.js [h|rh|json|csv] [url]');
   process.exit(1);
 }
-l
+
 // The handler function to invoke:
 var handlerType = process.argv[2];
 
@@ -76,6 +76,10 @@ var re_handler = createResponseHandler(function (data) {
 var json_handler = createResponseHandler(function (data) {
   var obj = JSON.parse(data);
   console.log(obj);
+});
+
+var csv_handler = createResponseHandler(function (data) {
+  console.log(data);
 });
 
 console.log(' --> connecting to ' + options.host + ' on port ' + options.port);
