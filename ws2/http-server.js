@@ -37,7 +37,8 @@ fileStream.pipe(csvConverter);
 
 function csvHandler(request, response){
   response.writeHead(200, { 'Content-Type' : 'text/csv' });
-  response.write(JSONObj);
+  json = JSON.stringify(JSONObj);
+  response.write(json);
   response.end();
 }
 
