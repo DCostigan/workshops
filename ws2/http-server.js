@@ -5,6 +5,7 @@ var Converter = require('csvtojson').core.Converter;
 var fileName = './user.csv';
 var fileStream = fs.createReadStream(fileName);
 var csvConverter = new Converter({constructResult:true});
+var JSONObj;
 
 function textHandler(request, response) {
   console.log('received a request from ' + request.headers.host);
@@ -29,13 +30,14 @@ function jsonHandler(request, response) {
   response.write(json);
   response.end();
 }
+csvConverter.on("end_parsed", function(jsonObj){
+    JSONObj = jsonObj;
+  });
+fileStream.pipe(csvConverter);
 
 function csvHandler(request, response){
   response.writeHead(200, { 'Content-Type' : 'text/csv' });
-  csvConverter.on("end_parsed", function(jsonObj){
-    response.write(jsonObj);
-  });
-  fileStream.pipe(csvConverter);
+  response.write(JSONObj);
   response.end();
 }
 
