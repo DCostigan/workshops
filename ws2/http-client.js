@@ -2,18 +2,18 @@ var url = require('url');
 var http = require('http');
 
 if (process.argv.length < 3) {
-  console.log('usage: node http-client.js [h|rh|json] [url]');
+  console.log('usage: node http-client.js [h|rh|json|csv] [url]');
   process.exit(1);
 }
-
+l
 // The handler function to invoke:
 var handlerType = process.argv[2];
 
 // The url to connect to:
 var urlStr = process.argv[3] || 'http://www-edlab.cs.umass.edu/cs326/schedule/';
 
-if (!(handlerType === 'h' || handlerType === 'rh' || handlerType === 'json')) {
-  console.log('usage: node http-client.js [h|rh|json] [url]');
+if (!(handlerType === 'h' || handlerType === 'rh' || handlerType === 'json' || handlerType ==='csv')) {
+  console.log('usage: node http-client.js [h|rh|json|csv] [url]');
   process.exit(1);  
 }
 
@@ -94,6 +94,10 @@ switch (handlerType) {
     var req = http.request(options, json_handler);
     req.end();
     break;  
+  case 'csv':
+    var req = http.request(options, csv_handler);
+    req.end();
+    break;
   default:
     console.log('unknown handler type');
 }
