@@ -1,8 +1,10 @@
 var http = require('http');
 var url  = require('url');
 var fs = require('fs');
-var csv = require('csv');
-var filepath = '/home/student/workshops/ws2/user.csv';
+var Converter = require('csvtojson').core.Converter;
+var fileName = './user.csv';
+var fileStream = fs.createReadStream(fileName);
+var csvConverter = new Converter({constructResult:true});
 
 function textHandler(request, response) {
   console.log('received a request from ' + request.headers.host);
@@ -29,10 +31,11 @@ function jsonHandler(request, response) {
 }
 
 function csvHandler(request, response){
-  var content;
   response.writeHead(200, { 'Content-Type' : 'text/csv' });
-  csv().from.stream.(fs.createReadStream(filepath, ))
-  response.write();
+  csvConverter.on("end_parsed", function(jsonObj){
+    response.write(jsonObj);
+  });
+  fileStream.pipe(csvConverter);
   response.end();
 }
 
