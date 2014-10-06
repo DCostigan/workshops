@@ -75,11 +75,3 @@ default:
   console.log("Invalid parameter: " + process.argv[2]);
   process.exit(1);
 }
-
-
-
-function foo(){
-	return "foo";
-}
-
-exports.foo = foo
