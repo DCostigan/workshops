@@ -44,6 +44,7 @@ function csvHandler(request, response){
 
 function dbHandler(request, response){
   response.writeHead(200, { 'Content-Type' : 'text/db' });
+  //call upon db module to get data from the server and provide the response
   db.getUsers(db.returnUsers, response);
 }
 
