@@ -14,17 +14,6 @@ var csvConverter = new Converter({constructResult:true});
 var JSONObj;
 var db = require('db');
 
-function textHandler(request, response) {
-  console.log('received a request from ' + request.headers.host);
-  console.log('resource requested: ' + request.url);
-  
-  response.writeHead(200, { 'Content-Type' : 'text/plain' });
-
-  response.write('hello: ' + request.headers.host + '\n');
-  response.write('  --> you requested ' + request.url);
-  response.end();
-}
-
 function jsonHandler(request, response) {
   response.writeHead(200, { 'Content-Type' : 'text/json' });
 
@@ -55,22 +44,22 @@ function csvHandler(request, response){
 
 function dbHandler(request, response){
   response.writeHead(200, { 'Content-Type' : 'text/db' });
-  dbJSON = db.getUsers(db.returnUsers);
-  dbStringJSON = JSON.stringify(dbJSON);
-  response.write(dbStringJSON);
+  dbJSON = db.getUsers(db.indexUsers, response);
+  console.log(dbJSON);
+  response.write(dbJSON);
   response.end();
 }
 
 //make sure the process has the correct number or arguments
 if (process.argv.length < 3) {
-  console.log('usage: node http-server.js [text|json|csv|db]');
+  console.log('usage: node http-server.js [json|csv|db]');
   process.exit(1);
 }
 
 //Make sure the handlerType is one of the predetermined types
 var handlerType = process.argv[2];
-if (!(handlerType === 'text' || handlerType === 'json' || handlerType === 'csv' || handlerType === 'db')) {
-  console.log('usage: node http-server.js [text|json|csv|db]');
+if (!(handlerType === 'json' || handlerType === 'csv' || handlerType === 'db')) {
+  console.log('usage: node http-server.js [json|csv|db]');
   process.exit(1);  
 }
 
@@ -78,9 +67,6 @@ var server = null;
 
 //Added another switch for the new handlerType to create a new type of server
 switch (handlerType) {
-  case 'text':
-    server = http.createServer(textHandler);
-    break;
   case 'json':
     server = http.createServer(jsonHandler);
     break;

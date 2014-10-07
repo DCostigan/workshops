@@ -2,9 +2,7 @@ var pg = require('pg');
 
 var connString = 'postgres://student:student@localhost/student';
 
-var json = [];
-
-function getUsers(callback) {
+function getUsers(callback, res) {
   pg.connect(connString, function (err, client, done) {
     if (err) {
       callback(err);
@@ -19,14 +17,14 @@ function getUsers(callback) {
           callback(err);
         }
         else {
-          callback(undefined, result.rows);
+          callback(undefined, result.rows, res);
         }
       });
     }
   });
 }
 
-function getUser(fname, lname, callback) {
+function getUser(fname, lname, callback, res) {
   pg.connect(connString, function (err, client, done) {
     if (err) {
       callback(err);
@@ -41,22 +39,25 @@ function getUser(fname, lname, callback) {
           callback(err);
         }
         else {
-          callback(undefined, result.rows);
+          callback(undefined, result.rows, res);
         }
       });
     }
   });
 }
 
-function returnUsers(err, users) {
+function returnUsers(err, users, res) {
   if (err) {
     throw err;
   }
   else {
+  	var jsonOBJ = [];
     users.forEach(function (user) {
-      json[json.length] = user;
+    	jsonOBJ.push(user);
     });
-    return json;
+    console.log(JSON.stringify(jsonOBJ));
+ 	res.write(JSON.stringify(jsonOBJ));
+ 	res.end();
   }
 }
 

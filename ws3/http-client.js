@@ -126,6 +126,8 @@ switch (handlerType) {
     break;
   case 'db':
     var req = http.request(options, json_handler);
+    req.end();
+    break;
   default:
     console.log('unknown handler type');
 }
