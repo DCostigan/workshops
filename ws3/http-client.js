@@ -125,7 +125,7 @@ switch (handlerType) {
     req.end();
     break;
   case 'db':
-    var req = http.request(options, json_handler);
+    var req = http.request(options, csv_handler);
     req.end();
     break;
   default:

@@ -44,10 +44,7 @@ function csvHandler(request, response){
 
 function dbHandler(request, response){
   response.writeHead(200, { 'Content-Type' : 'text/db' });
-  dbJSON = db.getUsers(db.indexUsers, response);
-  console.log(dbJSON);
-  response.write(dbJSON);
-  response.end();
+  db.getUsers(db.returnUsers, response);
 }
 
 //make sure the process has the correct number or arguments

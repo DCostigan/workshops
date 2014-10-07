@@ -47,16 +47,16 @@ function getUser(fname, lname, callback, res) {
 }
 
 function returnUsers(err, users, res) {
+  var jsonOBJ = [];
   if (err) {
     throw err;
   }
   else {
-  	var jsonOBJ = [];
     users.forEach(function (user) {
     	jsonOBJ.push(user);
     });
-    console.log(JSON.stringify(jsonOBJ));
- 	res.write(JSON.stringify(jsonOBJ));
+    json = JSON.stringify(jsonOBJ);
+ 	res.write(json);
  	res.end();
   }
 }
