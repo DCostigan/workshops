@@ -12,6 +12,7 @@ var fileStream = fs.createReadStream(fileName);
 var csvConverter = new Converter({constructResult:true});
 //json obj to store the callback from the converter
 var JSONObj;
+var db = require('db');
 
 function textHandler(request, response) {
   console.log('received a request from ' + request.headers.host);
@@ -52,16 +53,24 @@ function csvHandler(request, response){
   response.end();
 }
 
+function dbHandler(request, response){
+  response.writeHead(200, { 'Content-Type' : 'text/db' });
+  dbJSON = db.getUsers(db.returnUsers);
+  dbStringJSON = JSON.stringify(dbJSON);
+  response.write(dbStringJSON);
+  response.end();
+}
+
 //make sure the process has the correct number or arguments
 if (process.argv.length < 3) {
-  console.log('usage: node http-server.js [text|json|csv]');
+  console.log('usage: node http-server.js [text|json|csv|db]');
   process.exit(1);
 }
 
 //Make sure the handlerType is one of the predetermined types
 var handlerType = process.argv[2];
-if (!(handlerType === 'text' || handlerType === 'json' || handlerType === 'csv')) {
-  console.log('usage: node http-server.js [text|json|csv]');
+if (!(handlerType === 'text' || handlerType === 'json' || handlerType === 'csv' || handlerType === 'db')) {
+  console.log('usage: node http-server.js [text|json|csv|db]');
   process.exit(1);  
 }
 
@@ -77,6 +86,9 @@ switch (handlerType) {
     break;
   case 'csv':
     server = http.createServer(csvHandler);
+    break;
+  case 'db':
+    server = http.createServer(dbHandler);
     break;
   default:
     throw new Error('invalid handler type!');

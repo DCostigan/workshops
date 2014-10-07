@@ -3,7 +3,7 @@ var http = require('http');
 
 //make sure the client takes the appropriate number of arguments
 if (process.argv.length < 3) {
-  console.log('usage: node http-client.js [h|rh|json|csv] [url]');
+  console.log('usage: node http-client.js [h|rh|json|csv|db] [url]');
   process.exit(1);
 }
 
@@ -14,8 +14,8 @@ var handlerType = process.argv[2];
 var urlStr = process.argv[3] || 'http://www-edlab.cs.umass.edu/cs326/schedule/';
 
 //Added the csv handlerType to the valid handlerType check
-if (!(handlerType === 'h' || handlerType === 'rh' || handlerType === 'json' || handlerType ==='csv')) {
-  console.log('usage: node http-client.js [h|rh|json|csv] [url]');
+if (!(handlerType === 'h' || handlerType === 'rh' || handlerType === 'json' || handlerType ==='csv' || handlerType ==='db')) {
+  console.log('usage: node http-client.js [h|rh|json|csv|db] [url]');
   process.exit(1);  
 }
 
@@ -124,6 +124,8 @@ switch (handlerType) {
     var req = http.request(options, csv_handler);
     req.end();
     break;
+  case 'db':
+    var req = http.request(options, json_handler);
   default:
     console.log('unknown handler type');
 }

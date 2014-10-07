@@ -2,6 +2,8 @@ var pg = require('pg');
 
 var connString = 'postgres://student:student@localhost/student';
 
+var json = [];
+
 function getUsers(callback) {
   pg.connect(connString, function (err, client, done) {
     if (err) {
@@ -46,32 +48,19 @@ function getUser(fname, lname, callback) {
   });
 }
 
-function printUsers(err, users) {
+function returnUsers(err, users) {
   if (err) {
     throw err;
   }
   else {
     users.forEach(function (user) {
-      console.log(user);
+      json[json.length] = user;
     });
+    return json;
   }
 }
 
-if (process.argv.length < 3) {
-  console.log('usage: node users.js [a|u]');
-  process.exit(1);
-}
+exports.returnUsers = returnUsers
+exports.getUsers = getUsers
+exports.getUser = getUser
 
-switch (process.argv[2]) {
-case 'a':
-  getUsers(printUsers);
-  break;
-case 'u': 
-  var fname = process.argv[3];
-  var lname = process.argv[4];
-  getUser(fname, lname, printUsers);
-  break;
-default:
-  console.log("Invalid parameter: " + process.argv[2]);
-  process.exit(1);
-}
