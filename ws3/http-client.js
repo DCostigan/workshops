@@ -125,6 +125,7 @@ switch (handlerType) {
     req.end();
     break;
   case 'db':
+    //new db http request using old csv handler parser
     var req = http.request(options, csv_handler);
     req.end();
     break;
