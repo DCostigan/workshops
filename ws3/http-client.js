@@ -13,7 +13,7 @@ var handlerType = process.argv[2];
 // The url to connect to:
 var urlStr = process.argv[3] || 'http://www-edlab.cs.umass.edu/cs326/schedule/';
 
-//Added the csv handlerType to the valid handlerType check
+//Added the db handlerType to the valid handlerType check
 if (!(handlerType === 'h' || handlerType === 'rh' || handlerType === 'json' || handlerType ==='csv' || handlerType ==='db')) {
   console.log('usage: node http-client.js [h|rh|json|csv|db] [url] [fname] [lname]');
   process.exit(1);  
@@ -21,6 +21,7 @@ if (!(handlerType === 'h' || handlerType === 'rh' || handlerType === 'json' || h
 
 var url = url.parse(urlStr);
 
+//created header for fname and lname based on the process arguments
 var options = {
     host: url.hostname,
     path: url.path,
@@ -110,7 +111,7 @@ var csv_handler = createResponseHandler(function (data) {
 console.log(' --> connecting to ' + options.host + ' on port ' + options.port);
 console.log(' --> resource ' + options.path);
 
-//Added csv switch to request the data from the server
+//Added db switch to request the data from the server
 switch (handlerType) {
   case 'h':
     var req = http.request(options, handler);
