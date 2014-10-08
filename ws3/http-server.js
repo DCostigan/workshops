@@ -51,13 +51,14 @@ function dbHandler(request, response){
     fname: request.headers.fname,
     lname: request.headers.lname
   };
-
-  json = JSON.stringify(dbObj);
-  console.log(dbObj);
-
-  db.getUser(dbObj.fname, dbObj.lname, db.returnUsers, response);
+  
+  if((dbObj.fname === "undefined") || (dbObj.lname === "undefined")){
+    db.getUsers(db.returnUsers, response);
+  }
   //call upon db module to get data from the server and provide the response
-  //db.getUsers(db.returnUsers, response);
+  else{
+    db.getUser(dbObj.fname, dbObj.lname, db.returnUsers, response);
+  }
 }
 
 //make sure the process has the correct number or arguments
