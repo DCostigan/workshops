@@ -44,8 +44,20 @@ function csvHandler(request, response){
 
 function dbHandler(request, response){
   response.writeHead(200, { 'Content-Type' : 'text/db' });
+  
+  var dbObj = {
+    host: request.headers.host,
+    url : request.url,
+    fname: request.headers.fname,
+    lname: request.headers.lname
+  };
+
+  json = JSON.stringify(dbObj);
+  console.log(dbObj);
+
+  db.getUser(dbObj.fname, dbObj.lname, db.returnUsers, response);
   //call upon db module to get data from the server and provide the response
-  db.getUsers(db.returnUsers, response);
+  //db.getUsers(db.returnUsers, response);
 }
 
 //make sure the process has the correct number or arguments

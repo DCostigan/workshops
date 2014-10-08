@@ -25,7 +25,11 @@ var options = {
     host: url.hostname,
     path: url.path,
     port: url.port || 80,
-    method: 'GET'
+    method: 'GET',
+    headers: {
+      fname: process.argv[4],
+      lname: process.argv[5]
+    }
   };
 
 /**
