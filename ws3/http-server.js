@@ -12,6 +12,7 @@ var fileStream = fs.createReadStream(fileName);
 var csvConverter = new Converter({constructResult:true});
 //json obj to store the callback from the converter
 var JSONObj;
+//homemade db module
 var db = require('db');
 
 function jsonHandler(request, response) {
@@ -41,10 +42,11 @@ function csvHandler(request, response){
   response.write(json);
   response.end();
 }
-
+//new handler to deal with the new db content type
 function dbHandler(request, response){
   response.writeHead(200, { 'Content-Type' : 'text/db' });
   
+  //object to get fname and lname from client
   var dbObj = {
     host: request.headers.host,
     url : request.url,
@@ -52,6 +54,7 @@ function dbHandler(request, response){
     lname: request.headers.lname
   };
   
+  //check to see if we should get all users or just one user
   if((dbObj.fname === "undefined") || (dbObj.lname === "undefined")){
     db.getUsers(db.returnUsers, response);
   }
